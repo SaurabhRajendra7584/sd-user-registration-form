@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .error {
+            color: red;
+            font-size: 0.9em;
+            display: none;
+            margin-top: 5px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #showSavedDataBtn {
+            margin-top: 15px;
+            background-color: #007bff;
+            display: none;
+        }
+        #showSavedDataBtn:hover {
+            background-color: #0056b3;
+        }
+        #savedData {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            display: none;
+        }
+        .data-actions {
+            margin-top: 15px;
+        }
+        .data-actions button {
+            margin-right: 10px;
+            margin-bottom: 5px;
+        }
+        .export-btn {
+            background-color: #17a2b8;
+        }
+        .export-btn:hover {
+            background-color: #138496;
+        }
+        .clear-btn {
+            background-color: #dc3545;
+        }
+        .clear-btn:hover {
+            background-color: #c82333;
+        }
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 15px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>User Registration</h2>
+        <form id="registrationForm">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
+                <div id="nameError" class="error">Name must be at least 2 characters long.</div>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+                <div id="emailError" class="error">Please enter a valid email address.</div>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+                <div id="passwordError" class="error">Password must be at least 8 characters long, including an uppercase letter, a number, and a special character.</div>
+            </div>
+            <div class="form-group">
+                <label for="dob">Date of Birth</label>
+                <input type="date" id="dob" name="dob" required>
+                <div id="dobError" class="error">You must be at least 18 years old.</div>
+            </div>
+            <button type="submit">Register</button>
+        </form>
+        
+        <div class="success-message" id="successMessage">
+            Registration successful! Your data has been saved.
+        </div>
+        
+        <button id="showSavedDataBtn" onclick="toggleSavedData()">Show Saved Data</button>
+        
+        <div id="savedData">
+            <h3>Saved User Data</h3>
+            <p id="savedName"></p>
+            <p id="savedEmail"></p>
+            <p id="savedPassword"></p>
+            <p id="savedDob"></p>
+            <div class="data-actions">
+                <button class="export-btn" onclick="exportData()">Export Data</button>
+                <button class="clear-btn" onclick="clearData()">Clear Saved Data</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('registrationForm');
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const dobInput = document.getElementById('dob');
+        const savedDataDiv = document.getElementById('savedData');
+        const showSavedDataBtn = document.getElementById('showSavedDataBtn');
+        const successMessage = document.getElementById('successMessage');
+
+        // Load saved data on page load
+        checkForSavedData();
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (validateForm()) {
+                saveData();
+                showSuccessMessage();
+                form.reset();
+                showSavedDataButton();
+            }
+        });
+
+        function validateForm() {
+            let isValid = true;
+
+            // Name validation
+            const nameError = document.getElementById('nameError');
+            if (nameInput.value.length < 2) {
+                nameError.style.display = 'block';
+                isValid = false;
+            } else {
+                nameError.style.display = 'none';
+            }
+
+            // Email validation
+            const emailError = document.getElementById('emailError');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(emailInput.value)) {
+                emailError.style.display = 'block';
+                isValid = false;
+            } else {
+                emailError.style.display = 'none';
+            }
+
+            // Password validation
+            const passwordError = document.getElementById('passwordError');
+            const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+            if (!passwordRegex.test(passwordInput.value)) {
+                passwordError.style.display = 'block';
+                isValid = false;
+            } else {
+                passwordError.style.display = 'none';
+            }
+
+            // Date of Birth validation (must be at least 18 years old)
+            const dobError = document.getElementById('dobError');
+            const dob = new Date(dobInput.value);
+            const today = new Date();
+            const age = today.getFullYear() - dob.getFullYear();
+            const monthDiff = today.getMonth() - dob.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+                age--;
+            }
+            if (age < 18) {
+                dobError.style.display = 'block';
+                isValid = false;
+            } else {
+                dobError.style.display = 'none';
+            }
+
+            return isValid;
+        }
+
+        function saveData() {
+            const userData = {
+                name: nameInput.value,
+                email: emailInput.value,
+                password: passwordInput.value,
+                dob: dobInput.value,
+                timestamp: new Date().toISOString()
+            };
+            localStorage.setItem('userData', JSON.stringify(userData));
+        }
+
+        function showSuccessMessage() {
+            successMessage.style.display = 'block';
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 3000);
+        }
+
+        function showSavedDataButton() {
+            showSavedDataBtn.style.display = 'block';
+        }
+
+        function checkForSavedData() {
+            const userData = localStorage.getItem('userData');
+            if (userData) {
+                showSavedDataBtn.style.display = 'block';
+            }
+        }
+
+        function toggleSavedData() {
+            if (savedDataDiv.style.display === 'none' || savedDataDiv.style.display === '') {
+                displaySavedData();
+                showSavedDataBtn.textContent = 'Hide Saved Data';
+            } else {
+                savedDataDiv.style.display = 'none';
+                showSavedDataBtn.textContent = 'Show Saved Data';
+            }
+        }
+
+        function displaySavedData() {
+            const userData = JSON.parse(localStorage.getItem('userData'));
+            if (userData) {
+                savedDataDiv.style.display = 'block';
+                document.getElementById('savedName').textContent = `Name: ${userData.name}`;
+                document.getElementById('savedEmail').textContent = `Email: ${userData.email}`;
+                // Mask password with asterisks
+                const maskedPassword = '*'.repeat(userData.password.length);
+                document.getElementById('savedPassword').textContent = `Password: ${maskedPassword}`;
+                document.getElementById('savedDob').textContent = `Date of Birth: ${new Date(userData.dob).toLocaleDateString()}`;
+                showSavedDataBtn.textContent = 'Hide Saved Data';
+            } else {
+                savedDataDiv.style.display = 'none';
+                showSavedDataBtn.textContent = 'Show Saved Data';
+            }
+        }
+
+        function exportData() {
+            const userData = JSON.parse(localStorage.getItem('userData'));
+            if (userData) {
+                // Create export data without the actual password
+                const exportData = {
+                    name: userData.name,
+                    email: userData.email,
+                    password: '*'.repeat(userData.password.length),
+                    dateOfBirth: userData.dob,
+                    registrationDate: new Date(userData.timestamp).toLocaleString()
+                };
+                
+                // Convert to JSON string
+                const dataStr = JSON.stringify(exportData, null, 2);
+                
+                // Create blob and download
+                const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'user-registration-data.json';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+                
+                alert('Data exported successfully!');
+            } else {
+                alert('No data to export!');
+            }
+        }
+
+        function clearData() {
+            if (confirm('Are you sure you want to clear all saved data? This action cannot be undone.')) {
+                localStorage.removeItem('userData');
+                savedDataDiv.style.display = 'none';
+                showSavedDataBtn.style.display = 'none';
+                showSavedDataBtn.textContent = 'Show Saved Data';
+                alert('Saved data has been cleared successfully!');
+            }
+        }
+    </script>
+</body>
+</html>
