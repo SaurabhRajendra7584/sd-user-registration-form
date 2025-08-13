@@ -32,7 +32,7 @@ When someone successfully registers, I show a nice animated popup with a checkma
 
 - **HTML5** - For the structure (kept it semantic and clean)
 - **Tailwind CSS** - My first time using this framework, and I love how fast I could style everything!
-- **Vanilla JavaScript** - No frameworks, just pure JS. I wanted to really understand the fundamentals
+- **JavaScript** - No frameworks, just pure JS. I wanted to really understand the fundamentals
 - **localStorage** - For saving user data locally in the browser
 
 ## The Technical Stuff I Figured Out 🤓
@@ -63,33 +63,7 @@ This was honestly the most fun part to code. My algorithm checks:
 
 You can see my form in action here: [Live Demo](https://saurabhrajendra7584.github.io/sd-user-registration-form/)
 
-## What I Learned 📚
-
-Building this taught me a lot about:
-- How Tailwind CSS makes styling so much faster
-- Creating smooth user experiences with real-time feedback
-- Writing clean, maintainable JavaScript
-- The importance of good form validation
-- How small animations can make a big difference in UX
-
-## Future Ideas 💭
-
-I'm thinking about adding:
-- Dark mode toggle (because why not?)
-- Better mobile optimization
-- Maybe connect it to a real backend someday
-- Add more social login options
-
----
-
-*Built with ❤️ and lots of coffee by [Saurabh](https://github.com/SaurabhRajendra7584)*
-
-Feel free to check out the code, suggest improvements, or just say hi! 👋
-- User authentication and session management
-- Email verification system
-- Multi-step registration process
-- Advanced password strength indicators
-- Export registration data functionality
+*Built with ❤️ and  by [Saurabh](https://github.com/SaurabhRajendra7584)*
 
 ## 👨‍� Developer
 
@@ -101,33 +75,15 @@ Feel free to check out the code, suggest improvements, or just say hi! 👋
 
 This project is open source and available under the [MIT License](LICENSE).
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## ⭐ Show Your Support
-
 Give a ⭐️ if this project helped you learn about form validation and web development!
 
 ---
 
-*Built with ❤️ using HTML, CSS & JavaScript*
+*Built using HTML, CSS & JavaScript*
 - Password encryption and security improvements
 - Multi-user support
 - Data export capabilities
 - Enhanced accessibility features
-
-## 📞 Support
-
-For issues or questions about this project:
-1. Check the validation requirements carefully
-2. Ensure JavaScript is enabled in your browser
-3. Try clearing browser cache if experiencing issues
-4. Verify localStorage is supported and enabled
 
 ## 📄 License
 
